@@ -54,12 +54,13 @@ void LLAppend(struct LinkedList *ll, int value){
     e->data = value;
     e->next = NULL;
     current->next = e;
+    ll->length++;
 }
 
 int main(){
-    struct Element e1 = {3, 14, NULL};
-    struct Element e2 = {2, 5, &e1};
-    struct Element e3 = {1, 1, &e2};
+    struct Element e1 = {2, 14, NULL};
+    struct Element e2 = {1, 5, &e1};
+    struct Element e3 = {0, 1, &e2};
     struct LinkedList ll = {3, &e3};
     LLAppend(&ll, 23);
     LLPrint(&ll);
