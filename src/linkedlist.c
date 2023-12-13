@@ -1,48 +1,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 struct Element {
-    int index;
     int data;
     struct Element *next;
 };
 
+
 struct LinkedList {
-    int length;
     struct Element *head;
 };
 
-void LLPrintElement(struct Element *e){
-    printf("{Index: %d, Data: %d},", e->index, e->data);
+
+int LL_Length(struct LinkedList *ll){
+    struct Element *current = ll->head;
+    int length = 0;
+    if (current) {
+        length++;
+    }
+    while (current->next) {
+        length++;
+        current = current->next;
+    }
+    return length;
 }
 
 
-void LLPrint(struct LinkedList *ll){
+void LL_PrintElement(struct Element *e){
+    printf("{Data: %d},", e->data);
+}
+
+
+void LL_Print(struct LinkedList *ll){
+    printf("[");
     if (ll->head != NULL){
         struct Element *current = ll->head;
 
-        printf("[");
-        LLPrintElement(current);
+        LL_PrintElement(current);
         while (current->next){
             current = current->next;
-            LLPrintElement(current);
+            LL_PrintElement(current);
         }
-        printf("] length: %d\n", ll->length);
-        return;
     }
-
-    printf("[] length: %d\n", ll->length);
+    printf("] length: %d\n", LL_Length(ll));
 }
 
 
-void LLAppend(struct LinkedList *ll, int value){
+void LL_Append(struct LinkedList *ll, int value){
     struct Element *e = malloc(sizeof(*e));
     if (ll->head == NULL) {
-        e->index = 0;
         e->data = value;
         e->next = NULL;
         ll->head = e;
-        ll->length += 1;
         return;
     }
 
@@ -50,19 +60,16 @@ void LLAppend(struct LinkedList *ll, int value){
     while (current->next) {
         current = current->next;
     }
-    e->index = current->index + 1;
     e->data = value;
     e->next = NULL;
     current->next = e;
-    ll->length++;
 }
 
 int main(){
-    struct Element e1 = {2, 14, NULL};
-    struct Element e2 = {1, 5, &e1};
-    struct Element e3 = {0, 1, &e2};
-    struct LinkedList ll = {3, &e3};
-    LLAppend(&ll, 23);
-    LLPrint(&ll);
+    struct Element e2 = {33, NULL};
+    struct Element e = {11, &e2};
+    struct LinkedList ll = {&e};
+    LL_Append(&ll, 34);
+    LL_Print(&ll);
     return 0;
 }
