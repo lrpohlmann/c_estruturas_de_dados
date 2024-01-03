@@ -65,11 +65,51 @@ void LL_Append(struct LinkedList *ll, int value){
     current->next = e;
 }
 
+
+int LL_Insert(struct LinkedList *ll, int value, int index){
+    int length = LL_Length(ll);
+    if ((length < index) || (0 > index)) {
+        return 0;
+    }
+
+    if (length == index) {
+        LL_Append(ll, value);
+        return 1;
+    }
+
+    int current_index = 0;
+    struct Element *current_element = ll->head;
+    struct Element *e = malloc(sizeof(*e));
+    while (current_element->next) {
+        if (0 == index) {
+            e->data = value;
+            e->next = current_element;
+            ll->head = e;
+            return 1;
+        }
+
+        if (current_index == index - 1) {
+            e->data = value;
+            e->next = current_element->next;
+            current_element->next = e;
+            return 1;
+        }
+        current_element = current_element->next;
+        current_index++;
+    }
+    return 0;
+}
+
+
 int main(){
     struct Element e2 = {33, NULL};
     struct Element e = {11, &e2};
     struct LinkedList ll = {&e};
     LL_Append(&ll, 34);
     LL_Print(&ll);
+
+    LL_Insert(&ll, 44, 0);
+    LL_Print(&ll);
+
     return 0;
 }
