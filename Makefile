@@ -1,12 +1,7 @@
-BUILD := ./build
-OBJ := ./obj
-SRC := ./src
+BIN := test.out
+SRCS := $(wildcard *.c)
 
-linkedlist: linkedlist.o
-	cc -Wall -pedantic -g $(OBJ)/linkedlist.o -o $(BUILD)/linkedlist
-
-linkedlist.o: linkedlist.c 
-	cc -Wall -pedantic -g -c $(SRC)/linkedlist.c -o $(OBJ)/linkedlist.o
-
-linkedlist.c:
-	touch $(SRC)/$@
+all:
+	echo "Compilando test.c"
+	gcc $(SRCS) -o $(BIN) -lcriterion
+	./test.out
