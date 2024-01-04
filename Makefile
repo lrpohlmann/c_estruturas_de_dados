@@ -1,5 +1,12 @@
-linkedlist: linkedlist.o
-	cc -Wall -pedantic -g obj/linkedlist.o -o build/linkedlist
+BUILD := ./build
+OBJ := ./obj
+SRC := ./src
 
-linkedlist.o: 
-	cc -Wall -pedantic -g -c src/linkedlist.c -o obj/linkedlist.o
+linkedlist: linkedlist.o
+	cc -Wall -pedantic -g $(OBJ)/linkedlist.o -o $(BUILD)/linkedlist
+
+linkedlist.o: linkedlist.c 
+	cc -Wall -pedantic -g -c $(SRC)/linkedlist.c -o $(OBJ)/linkedlist.o
+
+linkedlist.c:
+	touch $(SRC)/$@
