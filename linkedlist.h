@@ -7,11 +7,9 @@ struct LinkedList {
   struct LL_Element *head;
 };
 
+int LL_Get(struct LinkedList *ll, int index, int *ptr_result);
+
 int LL_Length(struct LinkedList *ll);
-
-void LL_PrintElement(struct LL_Element *e);
-
-void LL_Print(struct LinkedList *ll);
 
 void LL_Append(struct LinkedList *ll, int value);
 

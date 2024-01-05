@@ -34,6 +34,50 @@ Test(ll, ll_length_tamanho_maior_1) {
   cr_assert(LL_Length(&a) == 2);
 }
 
+Test(ll, ll_get) {
+  struct LL_Element *e3 = (struct LL_Element *)malloc(sizeof(*e3));
+  e3->data = 8;
+  e3->next = NULL;
+
+  struct LL_Element *e2 = (struct LL_Element *)malloc(sizeof(*e2));
+  e2->data = 2;
+  e2->next = e3;
+
+  struct LL_Element *e1 = (struct LL_Element *)malloc(sizeof(*e1));
+  e1->data = 10;
+  e1->next = e2;
+
+  struct LinkedList list;
+  list.head = e1;
+
+  int get_value = 0;
+  int result = LL_Get(&list, 2, &get_value);
+  cr_assert(result == 1);
+  cr_assert(get_value == 8);
+}
+
+Test(ll, ll_get_fail) {
+  struct LL_Element *e3 = (struct LL_Element *)malloc(sizeof(*e3));
+  e3->data = 8;
+  e3->next = NULL;
+
+  struct LL_Element *e2 = (struct LL_Element *)malloc(sizeof(*e2));
+  e2->data = 2;
+  e2->next = e3;
+
+  struct LL_Element *e1 = (struct LL_Element *)malloc(sizeof(*e1));
+  e1->data = 10;
+  e1->next = e2;
+
+  struct LinkedList list;
+  list.head = e1;
+
+  int get_value = 0;
+  int result = LL_Get(&list, 400, &get_value);
+  cr_assert(result == 0);
+  cr_assert(get_value == 0);
+}
+
 Test(ll, ll_append_lista_vazia) {
   struct LinkedList list;
   list.head = NULL;
@@ -210,4 +254,25 @@ Test(ll, ll_pop_middle) {
   int pop_result = LL_Pop(&list, 1);
   cr_assert(pop_result == 1);
   cr_assert(e1->next == e3);
+}
+
+Test(ll, ll_pop_end) {
+  struct LL_Element *e3 = (struct LL_Element *)malloc(sizeof(*e3));
+  e3->data = 8;
+  e3->next = NULL;
+
+  struct LL_Element *e2 = (struct LL_Element *)malloc(sizeof(*e2));
+  e2->data = 2;
+  e2->next = e3;
+
+  struct LL_Element *e1 = (struct LL_Element *)malloc(sizeof(*e1));
+  e1->data = 10;
+  e1->next = e2;
+
+  struct LinkedList list;
+  list.head = e1;
+
+  int pop_result = LL_Pop(&list, 2);
+  cr_assert(pop_result == 1);
+  cr_assert(e2->next == NULL);
 }

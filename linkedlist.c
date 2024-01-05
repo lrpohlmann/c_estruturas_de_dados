@@ -16,20 +16,25 @@ int LL_Length(struct LinkedList *ll) {
   return length;
 }
 
-void LL_PrintElement(struct LL_Element *e) { printf("{Data: %d},", e->data); }
-
-void LL_Print(struct LinkedList *ll) {
-  printf("[");
-  if (ll->head != NULL) {
-    struct LL_Element *current = ll->head;
-
-    LL_PrintElement(current);
-    while (current->next) {
-      current = current->next;
-      LL_PrintElement(current);
-    }
+int LL_Get(struct LinkedList *ll, int index, int *ptr_result) {
+  int length = LL_Length(ll);
+  if ((ll->head == NULL) || (index < 0) || (index >= length)) {
+    return 0;
   }
-  printf("] length: %d\n", LL_Length(ll));
+
+  struct LL_Element *current = ll->head;
+  int current_index = 0;
+  while (current) {
+    if (index == current_index) {
+      *ptr_result = current->data;
+      return 1;
+    }
+
+    current = current->next;
+    current_index++;
+  }
+
+  return 0;
 }
 
 void LL_Append(struct LinkedList *ll, int value) {
@@ -85,28 +90,29 @@ int LL_Insert(struct LinkedList *ll, int value, int index) {
 }
 
 int LL_Pop(struct LinkedList *ll, int index) {
-    int length = LL_Length(ll);
-    if ((ll->head == NULL) || (index < 0) || (index >= length)) {
-        return 0;
-    }
-    
-    if (index == 0) {
-        struct LL_Element *to_be_deleted = ll->head;
-        ll->head = ll->head->next;
-        free(to_be_deleted);
-        return 1;
-    }
-    struct LL_Element *current = ll->head;
-    int current_index = 0;
-    while (current) {
-        if (index - 1 == current_index){
-           struct LL_Element *to_be_deleted = current->next;
-           current->next = current->next->next;
-           free(to_be_deleted);
-           return 1;
-        }
-        current = current->next;
-    }
-
+  int length = LL_Length(ll);
+  if ((ll->head == NULL) || (index < 0) || (index >= length)) {
     return 0;
+  }
+
+  if (index == 0) {
+    struct LL_Element *to_be_deleted = ll->head;
+    ll->head = ll->head->next;
+    free(to_be_deleted);
+    return 1;
+  }
+  struct LL_Element *current = ll->head;
+  int current_index = 0;
+  while (current) {
+    if (index - 1 == current_index) {
+      struct LL_Element *to_be_deleted = current->next;
+      current->next = current->next->next;
+      free(to_be_deleted);
+      return 1;
+    }
+    current = current->next;
+    current_index++;
+  }
+
+  return 0;
 }
