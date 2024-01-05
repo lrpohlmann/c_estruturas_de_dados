@@ -6,7 +6,7 @@
 
 Test(ll, ll_length_tamanho_1) {
   struct LinkedList a;
-  struct Element b;
+  struct LL_Element b;
   b.data = 1;
   b.next = NULL;
   a.head = &b;
@@ -20,36 +20,127 @@ Test(ll, ll_length_tamanho_0) {
 }
 
 Test(ll, ll_length_tamanho_maior_1) {
-  struct Element c;
+  struct LL_Element c;
   c.data = 5;
   c.next = NULL;
-  
-  struct Element b;
+
+  struct LL_Element b;
   b.data = 1;
   b.next = &c;
-  
+
   struct LinkedList a;
   a.head = &b;
   cr_assert(LL_Length(&a) == 2);
 }
 
 Test(ll, ll_append_lista_vazia) {
-    struct LinkedList list;
-    list.head = NULL;
+  struct LinkedList list;
+  list.head = NULL;
 
-    LL_Append(&list, 2);
+  LL_Append(&list, 2);
 
-    cr_assert(list.head->data == 2);
+  cr_assert(list.head->data == 2);
 }
 
 Test(ll, ll_append_lista_preenchida) {
-    struct Element e1;
-    e1.data = 10;
-    e1.next = NULL;
-    struct LinkedList list;
-    list.head = &e1;
-    
-    LL_Append(&list, 10);
+  struct LL_Element e1;
+  e1.data = 10;
+  e1.next = NULL;
+  struct LinkedList list;
+  list.head = &e1;
 
-    cr_assert(list.head->next->data == 10);
+  LL_Append(&list, 10);
+
+  cr_assert(list.head->next->data == 10);
+}
+
+Test(ll, ll_insert_lista_vazia) {
+  struct LinkedList list;
+  list.head = NULL;
+
+  int insert_result = LL_Insert(&list, 10, 0);
+  cr_assert(insert_result == 1);
+}
+
+Test(ll, ll_insert_lista_preenchida_0) {
+  struct LL_Element e2;
+  e2.data = 3;
+  e2.next = NULL;
+
+  struct LL_Element e1;
+  e1.data = 5;
+  e1.next = &e2;
+
+  struct LinkedList list;
+  list.head = &e1;
+
+  int insert_result = LL_Insert(&list, 10, 0);
+  cr_assert(insert_result == 1);
+  cr_assert(list.head->data == 10);
+}
+
+Test(ll, ll_insert_lista_preenchida_fim) {
+  struct LL_Element e2;
+  e2.data = 3;
+  e2.next = NULL;
+
+  struct LL_Element e1;
+  e1.data = 5;
+  e1.next = &e2;
+
+  struct LinkedList list;
+  list.head = &e1;
+
+  int insert_result = LL_Insert(&list, 10, 2);
+  cr_assert(insert_result == 1);
+  cr_assert(list.head->next->next->data == 10);
+}
+
+Test(ll, ll_insert_lista_preenchida_meio) {
+  struct LL_Element e2;
+  e2.data = 3;
+  e2.next = NULL;
+
+  struct LL_Element e1;
+  e1.data = 5;
+  e1.next = &e2;
+
+  struct LinkedList list;
+  list.head = &e1;
+
+  int insert_result = LL_Insert(&list, 10, 1);
+  cr_assert(insert_result == 1);
+  cr_assert(list.head->next->data == 10);
+}
+
+Test(ll, ll_insert_indice_menor_que_0) {
+  struct LL_Element e2;
+  e2.data = 3;
+  e2.next = NULL;
+
+  struct LL_Element e1;
+  e1.data = 5;
+  e1.next = &e2;
+
+  struct LinkedList list;
+  list.head = &e1;
+
+  int insert_result = LL_Insert(&list, 10, -1);
+  cr_assert(insert_result == 0);
+}
+
+Test(ll, ll_insert_indice_maior_que_a_lista) {
+  struct LL_Element e2;
+  e2.data = 3;
+  e2.next = NULL;
+
+  struct LL_Element e1;
+  e1.data = 5;
+  e1.next = &e2;
+
+  struct LinkedList list;
+  list.head = &e1;
+
+  int insert_result = LL_Insert(&list, 10, 100);
+  cr_assert(insert_result == 0);
 }

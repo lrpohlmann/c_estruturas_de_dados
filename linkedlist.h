@@ -1,15 +1,15 @@
-struct Element {
+struct LL_Element {
   int data;
-  struct Element *next;
+  struct LL_Element *next;
 };
 
 struct LinkedList {
-  struct Element *head;
+  struct LL_Element *head;
 };
 
 int LL_Length(struct LinkedList *ll);
 
-void LL_PrintElement(struct Element *e);
+void LL_PrintElement(struct LL_Element *e);
 
 void LL_Print(struct LinkedList *ll);
 

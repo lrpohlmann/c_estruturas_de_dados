@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 int LL_Length(struct LinkedList *ll) {
-  struct Element *current = ll->head;
+  struct LL_Element *current = ll->head;
   int length = 0;
   if (current) {
     length++;
@@ -16,12 +16,12 @@ int LL_Length(struct LinkedList *ll) {
   return length;
 }
 
-void LL_PrintElement(struct Element *e) { printf("{Data: %d},", e->data); }
+void LL_PrintElement(struct LL_Element *e) { printf("{Data: %d},", e->data); }
 
 void LL_Print(struct LinkedList *ll) {
   printf("[");
   if (ll->head != NULL) {
-    struct Element *current = ll->head;
+    struct LL_Element *current = ll->head;
 
     LL_PrintElement(current);
     while (current->next) {
@@ -33,7 +33,7 @@ void LL_Print(struct LinkedList *ll) {
 }
 
 void LL_Append(struct LinkedList *ll, int value) {
-  struct Element *e = malloc(sizeof(*e));
+  struct LL_Element *e = malloc(sizeof(*e));
   if (ll->head == NULL) {
     e->data = value;
     e->next = NULL;
@@ -41,7 +41,7 @@ void LL_Append(struct LinkedList *ll, int value) {
     return;
   }
 
-  struct Element *current = ll->head;
+  struct LL_Element *current = ll->head;
   while (current->next) {
     current = current->next;
   }
@@ -62,8 +62,8 @@ int LL_Insert(struct LinkedList *ll, int value, int index) {
   }
 
   int current_index = 0;
-  struct Element *current_element = ll->head;
-  struct Element *e = malloc(sizeof(*e));
+  struct LL_Element *current_element = ll->head;
+  struct LL_Element *e = malloc(sizeof(*e));
   while (current_element->next) {
     if (0 == index) {
       e->data = value;
