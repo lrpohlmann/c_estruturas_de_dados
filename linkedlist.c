@@ -116,3 +116,17 @@ int LL_Pop(struct LinkedList *ll, int index) {
 
   return 0;
 }
+
+void LL_Sort(struct LinkedList *ll) {
+  if (ll->head != NULL) {
+    struct LL_Element *current = ll->head;
+    while (current->next) {
+      if (current->data > current->next->data) {
+        int i = current->next->data;
+        current->next->data = current->data;
+        current->data = i;
+      }
+      current = current->next;
+    }
+  }
+}

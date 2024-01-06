@@ -15,4 +15,6 @@ void LL_Append(struct LinkedList *ll, int value);
 
 int LL_Insert(struct LinkedList *ll, int value, int index);
 
-int LL_Pop(struct LinkedList *ll, int index);  
+int LL_Pop(struct LinkedList *ll, int index);
+
+void LL_Sort(struct LinkedList *ll);

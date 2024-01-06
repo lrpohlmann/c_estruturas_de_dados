@@ -276,3 +276,59 @@ Test(ll, ll_pop_end) {
   cr_assert(pop_result == 1);
   cr_assert(e2->next == NULL);
 }
+
+Test(ll, ll_sort) {
+  struct LL_Element *e3 = (struct LL_Element *)malloc(sizeof(*e3));
+  e3->data = 8;
+  e3->next = NULL;
+
+  struct LL_Element *e2 = (struct LL_Element *)malloc(sizeof(*e2));
+  e2->data = 2;
+  e2->next = e3;
+
+  struct LL_Element *e1 = (struct LL_Element *)malloc(sizeof(*e1));
+  e1->data = 10;
+  e1->next = e2;
+
+  struct LinkedList list;
+  list.head = e1;
+
+  LL_Sort(&list);
+  struct LL_Element *current = list.head;
+  while (current->next) {
+    cr_assert(current->next->data >= current->data);
+    current = current->next;
+  }
+}
+
+Test(ll, ll_sort_empty_list) {
+  struct LinkedList list;
+  list.head = NULL;
+
+  LL_Sort(&list);
+  cr_assert(list.head == NULL);
+}
+
+Test(ll, ll_sort_do_nothing) {
+  struct LL_Element *e3 = (struct LL_Element *)malloc(sizeof(*e3));
+  e3->data = 10;
+  e3->next = NULL;
+
+  struct LL_Element *e2 = (struct LL_Element *)malloc(sizeof(*e2));
+  e2->data = 6;
+  e2->next = e3;
+
+  struct LL_Element *e1 = (struct LL_Element *)malloc(sizeof(*e1));
+  e1->data = 6;
+  e1->next = e2;
+
+  struct LinkedList list;
+  list.head = e1;
+
+  LL_Sort(&list);
+  struct LL_Element *current = list.head;
+  while (current->next) {
+    cr_assert(current->next->data >= current->data);
+    current = current->next;
+  }
+}
