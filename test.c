@@ -1,7 +1,9 @@
 #include "linkedlist.h"
+#include "stack.h"
 #include <criterion/criterion.h>
 #include <criterion/internal/assert.h>
 #include <criterion/internal/test.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -331,4 +333,125 @@ Test(ll, ll_sort_do_nothing) {
     cr_assert(current->next->data >= current->data);
     current = current->next;
   }
+}
+
+Test(st, st_init_size_0) {
+  Stack *stack = ST_Init(0, NULL);
+  cr_assert_eq(stack, NULL);
+}
+
+Test(st, st_init_size_non_0) {
+  Stack *stack = ST_Init(8, NULL);
+  cr_assert_eq(stack->size, 8);
+  cr_assert_eq(stack->length, 0);
+  cr_assert_not_null(stack->elements);
+}
+
+Test(st, st_init_with_values) {
+  int init_values[] = {5, 7, 9, 11};
+  Stack *stack = ST_Init(4, init_values);
+
+  for (int i = 0; i < stack->size; i++) {
+    cr_assert_eq(stack->elements[i], init_values[i]);
+  };
+  cr_assert_eq(stack->length, 4);
+}
+
+Test(st, st_push_ok) {
+  const int PUSH_VALUE = 100;
+  const int EXPECTED_LENGTH = 1;
+  Stack *stack = ST_Init(5, NULL);  
+
+  cr_assert(ST_Push(stack, PUSH_VALUE));
+  cr_assert_eq(stack->elements[0], PUSH_VALUE);
+  cr_assert_eq(stack->length, EXPECTED_LENGTH);
+}
+
+Test(st, st_push_stack_full) {
+  const int INIT_STACK_SIZE = 6;
+  const int PUSH_VALUE = 12;
+
+  int init_values[] = {6, 7, 8, 9, 10, 11};
+  Stack *stack = ST_Init(INIT_STACK_SIZE, init_values);
+
+  cr_assert(!ST_Push(stack, PUSH_VALUE));
+  cr_assert(stack->elements[5] != PUSH_VALUE);
+}
+
+Test(st, st_push_until_its_full) {
+    const int INIT_STACK_SIZE = 3;
+    
+    Stack *stack = ST_Init(INIT_STACK_SIZE, NULL);
+    
+    int push_value = 1;
+    bool push_sucess = ST_Push(stack, push_value);
+    while (push_sucess) {
+        push_value++;
+        push_sucess = ST_Push(stack, push_value);
+    }
+
+    cr_assert(stack->elements[0] == 1);
+    cr_assert(stack->elements[1] == 2);
+    cr_assert(stack->elements[2] == 3);
+    cr_assert(stack->length == 3);
+}
+
+Test(st, st_pop_empty_stack){
+    Stack *stack = ST_Init(3, NULL);
+    int element = 0;
+
+    bool pop_sucess = ST_Pop(stack, &element);
+    cr_assert(!pop_sucess);
+    cr_assert_eq(element, 0);
+    cr_assert_eq(stack->length, 0);
+}
+
+Test(st, st_pop_ok){
+    int init_values[] = {5,6,7,8};
+    Stack *stack = ST_Init(4, init_values);
+    int element = 0;
+
+    bool pop_sucess = ST_Pop(stack, &element);
+
+    cr_assert(pop_sucess);
+    cr_assert_eq(element, 8);
+    cr_assert_eq(stack->length, 3);
+}
+
+Test(st, st_pop_until_empty) {
+    int init_values[] = {9, 3, 5, 1};
+    Stack *stack = ST_Init(4, init_values);
+    int element = 0;
+
+    bool pop_sucess = ST_Pop(stack, &element);
+    while (pop_sucess) {
+        pop_sucess = ST_Pop(stack, &element);
+    }
+
+    cr_assert_eq(stack->length, 0);
+}
+
+Test(st, st_peek_empty_stack) {
+    Stack *stack = ST_Init(8, NULL);
+    int element = -1;
+
+    bool peek_sucess = ST_Peek(stack, &element);
+    cr_assert(!peek_sucess);
+    cr_assert_eq(element, -1);
+}
+
+Test(st, st_peek_ok) {
+    int init_values[] = {5, 7, 9};
+    Stack *stack = ST_Init(3, init_values);
+    int element = -1;
+
+    bool peek_sucess = ST_Peek(stack, &element);
+    cr_assert(peek_sucess);
+    cr_assert_eq(element, 9);
+
+    int element2 = -1;
+    ST_Peek(stack, &element2);
+    cr_assert_eq(element2, 9);
+
+
 }
